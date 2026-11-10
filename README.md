@@ -50,16 +50,7 @@ src/SurveyLive/
 docs/              Концепция, увод, проучване и план
 ```
 
-Началната схема е описана в [документацията](docs/README.md#42-начален-модел-на-базата-данни). `GET /api/surveys/1` връща демонстрационната анкета. Непознат идентификатор връща HTTP 404. Настройката за базата е в `src/SurveyLive/appsettings.json`.
-
-## Проверка
-
-```powershell
-dotnet build --configuration Release
-dotnet ef migrations has-pending-model-changes --project src/SurveyLive
-```
-
-Резултатите от извършените проверки са описани в [Проверки на началния етап](docs/verification.md).
+Началната схема е описана в [документацията](docs/README.md#5-начална-база-данни). `GET /api/surveys/1` връща демонстрационната анкета. Настройката за базата е в `src/SurveyLive/appsettings.json`.
 
 ## Автор
 
