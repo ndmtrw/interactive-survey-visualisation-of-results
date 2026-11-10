@@ -20,6 +20,47 @@
 
 C#, ASP.NET Core, Entity Framework Core, SQLite, HTML, CSS и JavaScript. За комуникацията в реално време е планиран ASP.NET Core SignalR.
 
+## Стартиране
+
+Необходим е [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0). Не са необходими Node.js, отделен SQL сървър или пароли за базата.
+
+Изпълни от основната папка на хранилището:
+
+```powershell
+dotnet restore
+dotnet tool restore
+dotnet ef database update --project src/SurveyLive
+dotnet run --project src/SurveyLive
+```
+
+Отвори [http://localhost:5080](http://localhost:5080). Показва се неактивна демонстрационна анкета с един въпрос и три варианта за отговор. Гласуване все още не е реализирано. Няма тестови профили, защото входът предстои.
+
+Командата за миграция създава `src/SurveyLive/survey-live.db` и демонстрационните данни. При повторно изпълнение вече приложената миграция се пропуска. Файлът на базата не се качва в Git; базата се създава от миграцията на всеки компютър.
+
+## Структура
+
+```text
+src/SurveyLive/
+  Controllers/     HTTP заявки за преглед на анкети
+  Data/            EF Core контекст, връзки и ограничения
+  Migrations/      Начална схема и демонстрационни данни
+  Models/          Survey, Question, AnswerOption, Vote
+  Properties/      Настройки за локално стартиране
+  wwwroot/         HTML, CSS и JavaScript
+docs/              Концепция, увод, проучване и план
+```
+
+Началната схема е описана в [документацията](docs/README.md#42-начален-модел-на-базата-данни). `GET /api/surveys/1` връща демонстрационната анкета. Непознат идентификатор връща HTTP 404. Настройката за базата е в `src/SurveyLive/appsettings.json`.
+
+## Проверка
+
+```powershell
+dotnet build --configuration Release
+dotnet ef migrations has-pending-model-changes --project src/SurveyLive
+```
+
+Резултатите от извършените проверки са описани в [Проверки на началния етап](docs/verification.md).
+
 ## Автор
 
 [ndmtrw](https://github.com/ndmtrw). Името за титулната страница и класът предстои да бъдат попълнени от дипломанта.

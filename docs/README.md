@@ -176,6 +176,8 @@ erDiagram
 
 Използваните източници са интернет материали, подредени по организация. Номерата в квадратни скоби в текста препращат към списъка. Не са добавяни неизползвани печатни източници.
 
+Дата на достъп до източниците: 10.11.2026 г.
+
 1. Mentimeter. *How to participate in a Menti*. [Официална документация](https://help.mentimeter.com/en/articles/410537-how-to-participate-in-a-menti).
 2. Microsoft. *Overview of ASP.NET Core*. [Официална документация](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core).
 3. Microsoft. *Migrations Overview — EF Core*. [Официална документация](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/).
