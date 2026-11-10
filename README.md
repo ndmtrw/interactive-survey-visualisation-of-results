@@ -10,7 +10,6 @@
 
 - [GitHub хранилище](https://github.com/ndmtrw/interactive-survey-visualisation-of-results)
 - [Документация](docs/README.md)
-- [Кратко описание за предаване на етапа](docs/stage-1.md)
 
 ## Планирани функционалности
 
