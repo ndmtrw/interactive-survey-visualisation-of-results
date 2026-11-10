@@ -8,11 +8,4 @@
 * { box-sizing: border-box; }
 body { margin: 0; }
 main { max-width: 760px; margin: auto; padding: 64px 24px; }
-header { margin-bottom: 40px; }
 h1 { font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.15; }
-h2 { font-size: 1.3rem; }
-header p, #status { color: #4b6170; }
-.label { color: #006b60; font-weight: bold; }
-section { padding: 28px; background: white; border: 1px solid #d6e2e7; border-radius: 16px; }
-ol { padding-left: 24px; }
-li { padding: 8px 0; }

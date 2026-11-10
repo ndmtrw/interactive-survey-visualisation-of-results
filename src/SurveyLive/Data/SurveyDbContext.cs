@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SurveyLive.Models;
 
 namespace SurveyLive.Data;
 
-public class SurveyDbContext(DbContextOptions<SurveyDbContext> options) : IdentityDbContext<IdentityUser>(options)
+public class SurveyDbContext(DbContextOptions<SurveyDbContext> options) : DbContext(options)
 {
     public DbSet<Survey> Surveys => Set<Survey>();
     public DbSet<SurveySession> SurveySessions => Set<SurveySession>();
@@ -15,11 +13,8 @@ public class SurveyDbContext(DbContextOptions<SurveyDbContext> options) : Identi
 
     protected override void OnModelCreating(ModelBuilder model)
     {
-        base.OnModelCreating(model);
-
         var survey = model.Entity<Survey>();
         survey.Property(s => s.Title).IsRequired().HasMaxLength(150);
-        survey.HasOne<IdentityUser>().WithMany().HasForeignKey(s => s.OwnerId).OnDelete(DeleteBehavior.NoAction);
         survey.HasMany(s => s.Questions).WithOne().HasForeignKey(q => q.SurveyId).OnDelete(DeleteBehavior.NoAction);
         survey.ToTable(t => t.HasCheckConstraint("CK_Surveys_Title", "LEN(LTRIM(RTRIM([Title]))) > 0"));
 
@@ -65,28 +60,5 @@ public class SurveyDbContext(DbContextOptions<SurveyDbContext> options) : Identi
             .HasPrincipalKey(o => new { o.Id, o.QuestionId }).OnDelete(DeleteBehavior.NoAction);
         vote.ToTable(t => t.HasCheckConstraint("CK_Votes_ParticipantId", "LEN(LTRIM(RTRIM([ParticipantId]))) > 0"));
 
-        survey.HasData(new Survey
-        {
-            Id = 1,
-            Title = "Участие в интерактивни анкети",
-            CreatedAt = new DateTime(2026, 11, 10, 0, 0, 0, DateTimeKind.Utc)
-        });
-        session.HasData(new SurveySession
-        {
-            Id = 1,
-            SurveyId = 1,
-            JoinCode = "123456",
-            CreatedAt = new DateTime(2026, 11, 10, 0, 0, 0, DateTimeKind.Utc)
-        });
-        question.HasData(new Question { Id = 1, SurveyId = 1, Text = "Кой начин за присъединяване предпочиташ?", Position = 1 });
-        option.HasData(
-            new AnswerOption { Id = 1, QuestionId = 1, Text = "Кратък код", Position = 1 },
-            new AnswerOption { Id = 2, QuestionId = 1, Text = "QR код", Position = 2 },
-            new AnswerOption { Id = 3, QuestionId = 1, Text = "Директна връзка", Position = 3 });
-
-        model.Entity<IdentityRole>().HasData(
-            new IdentityRole { Id = "role-author", Name = "Author", NormalizedName = "AUTHOR", ConcurrencyStamp = "role-author" },
-            new IdentityRole { Id = "role-presenter", Name = "Presenter", NormalizedName = "PRESENTER", ConcurrencyStamp = "role-presenter" },
-            new IdentityRole { Id = "role-administrator", Name = "Administrator", NormalizedName = "ADMINISTRATOR", ConcurrencyStamp = "role-administrator" });
     }
 }
