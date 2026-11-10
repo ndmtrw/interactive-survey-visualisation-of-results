@@ -11,7 +11,7 @@ public class SurveysController(SurveyDbContext db) : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
     {
-        var survey = await db.Surveys.AsNoTracking()
+        var survey = await db.Surveys.AsNoTracking().AsSplitQuery()
             .Where(s => s.Id == id)
             .Select(s => new
             {
