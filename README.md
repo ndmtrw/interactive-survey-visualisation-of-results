@@ -1,4 +1,4 @@
-# Платформа за интерактивни анкети на живо
+# Платформа за интерактивни анкети на живо и визуализация на резултати
 
 Дипломен проект за уеб платформа за провеждане на интерактивни анкети с присъединяване чрез код или QR код и визуализация на резултатите в реално време.
 
@@ -18,11 +18,11 @@
 
 ## Технологии
 
-C#, ASP.NET Core, Entity Framework Core, SQLite, HTML, CSS и JavaScript. За комуникацията в реално време е планиран ASP.NET Core SignalR.
+C#, ASP.NET Core MVC с Razor (.NET 10), Identity, Entity Framework Core Code First, MS SQL Server, HTML, CSS и JavaScript. За реалното време и графиките са планирани SignalR и Chart.js.
 
 ## Стартиране
 
-Необходим е [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0). Не са необходими Node.js, отделен SQL сървър или пароли за базата.
+Необходими са [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) и SQL Server. Настройката по подразбиране използва SQL Server Express LocalDB под Windows с Windows удостоверяване, без парола в проекта.
 
 Изпълни от основната папка на хранилището:
 
@@ -35,18 +35,29 @@ dotnet run --project src/SurveyLive
 
 Отвори [http://localhost:5080](http://localhost:5080). Показва се неактивна демонстрационна анкета с един въпрос и три варианта за отговор. Гласуване все още не е реализирано. Няма тестови профили, защото входът предстои.
 
-Командата за миграция създава `src/SurveyLive/survey-live.db` и демонстрационните данни. При повторно изпълнение вече приложената миграция се пропуска. Файлът на базата не се качва в Git; базата се създава от миграцията на всеки компютър.
+Командата за миграция създава базата `SurveyLive`, петте основни таблици, Identity таблиците и началните данни: анкета, неактивна сесия, въпрос, три варианта и ролите Author, Presenter и Administrator. При повторно изпълнение вече приложената миграция се пропуска. Това е начална схема, без реализирани вход и управление на правата.
+
+За друга SQL Server инстанция настрой `ConnectionStrings:DefaultConnection` чрез User Secrets от основната папка:
+
+```powershell
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;Database=SurveyLive;Trusted_Connection=True;TrustServerCertificate=True" --project src/SurveyLive
+```
+
+User Secrets се зареждат в среда Development. При такова заместване изпълни миграцията също в Development, например с `$env:ASPNETCORE_ENVIRONMENT = "Development"` преди командите. При публикуване използвай защитена настройка `ConnectionStrings__DefaultConnection` на сървъра. Доверието към локалния сертификат в примера е само за разработване.
 
 ## Структура
 
 ```text
 src/SurveyLive/
   Controllers/     HTTP заявки за преглед на анкети
-  Data/            EF Core контекст, връзки и ограничения
+  Services/        Приложна логика чрез интерфейс и услуга
+  Data/            EF Core контекст, Identity и ограничения
   Migrations/      Начална схема и демонстрационни данни
-  Models/          Survey, Question, AnswerOption, Vote
+  Models/          Survey, SurveySession, Question, AnswerOption, Vote
+  ViewModels/      Данни за представяне в интерфейса
+  Views/           Начален Razor изглед
   Properties/      Настройки за локално стартиране
-  wwwroot/         HTML, CSS и JavaScript
+  wwwroot/         CSS и JavaScript
 docs/              Концепция, увод, проучване и план
 ```
 
