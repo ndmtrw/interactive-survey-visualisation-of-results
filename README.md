@@ -63,4 +63,4 @@ dotnet ef migrations has-pending-model-changes --project src/SurveyLive
 
 ## Автор
 
-[ndmtrw](https://github.com/ndmtrw). Името за титулната страница и класът предстои да бъдат попълнени от дипломанта.
+Atanas Dimitrov
